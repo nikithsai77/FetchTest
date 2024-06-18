@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">FetchTest</string>
+    <string name="retry">Retry</string>
+    <string name="please_wait_loading">Please Wait Loading...</string>
+</resources>
