@@ -6,9 +6,12 @@ import com.android.fetchtest.data.Item
 import com.android.fetchtest.data.NoteState
 import com.android.fetchtest.usecase.ApiUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,20 +24,18 @@ class ItemViewModel @Inject constructor(private val apiUseCase: ApiUseCase) : Vi
     }
 
     fun fetchItems() {
-        //Here we no need to change the dispatcher of the coroutine bez i'm using coroutine 1.7.3
-        //version so internal of suspend function will automatically change the dispatcher of the coroutine.
-        viewModelScope.launch {
+       viewModelScope.launch(Dispatchers.IO) {
             _allItems.value = _allItems.value.copy(isLoading = true, isFailed = false)
             try {
                 val fetchedItems = apiUseCase.getItems()
                 val finalItemsList = fetchedItems.filter {
                         !it.name.isNullOrBlank()
                     }
-                    .sortedWith(compareBy<Item> {
+                    .sortedWith(compareBy {
                         it.listId
-                    }.thenBy {
-                        it.name
-                    })
+                    }).sortedBy {
+                        it.name!!.split(" ")[1].toInt()
+                    }
                 _allItems.value = _allItems.value.copy(itemList = finalItemsList, isLoading = false, isFailed = false)
             }
             catch (ex: Exception) {
