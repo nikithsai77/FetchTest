@@ -2,16 +2,13 @@ package com.android.fetchtest.mvvm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.fetchtest.data.Item
 import com.android.fetchtest.data.NoteState
 import com.android.fetchtest.usecase.ApiUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,13 +26,17 @@ class ItemViewModel @Inject constructor(private val apiUseCase: ApiUseCase) : Vi
             try {
                 val fetchedItems = apiUseCase.getItems()
                 val finalItemsList = fetchedItems.filter {
-                        !it.name.isNullOrBlank()
+                    !it.name.isNullOrBlank()
+                }.sortedBy {
+                    it.listId
+                }.groupBy{
+                    item -> item.listId
+                }.toSortedMap()
+                finalItemsList.forEach { (key, items) ->
+                    finalItemsList[key] = items.sortedBy { item ->
+                        item.name!!.split(" ")[1].toInt()
                     }
-                    .sortedWith(compareBy {
-                        it.listId
-                    }).sortedBy {
-                        it.name!!.split(" ")[1].toInt()
-                    }
+                }
                 _allItems.value = _allItems.value.copy(itemList = finalItemsList, isLoading = false, isFailed = false)
             }
             catch (ex: Exception) {

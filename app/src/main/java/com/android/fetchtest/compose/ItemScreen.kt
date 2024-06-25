@@ -87,14 +87,12 @@ fun Retry(errorMsg: String, retry: () -> Unit) {
 fun DisplayItems(state: NoteState) {
     Scaffold(topBar = { topAppBar() }) {
         LazyColumn(contentPadding = it, modifier = Modifier.fillMaxWidth()) {
-            state.itemList.groupBy { item -> item.listId }.forEach { (listId, items) ->
-                run {
-                    item {
-                        Title(listId)
-                    }
-                    items(items) { item ->
-                        ItemRow(item)
-                    }
+            state.itemList.forEach { (listId, items) ->
+                item {
+                    Title(listId)
+                }
+                items(items) { item ->
+                    ItemRow(item)
                 }
             }
         }
