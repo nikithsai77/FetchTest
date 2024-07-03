@@ -30,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.fetchtest.R
 import com.android.fetchtest.data.Item
 import com.android.fetchtest.data.NoteState
@@ -49,7 +50,7 @@ fun topAppBar() {
 
 @Composable
 fun ItemScreen(itemViewModel: ItemViewModel = hiltViewModel()) {
-    val state by itemViewModel.stateFlow.collectAsState()
+    val state by itemViewModel.stateFlow.collectAsStateWithLifecycle()
     val retry = itemViewModel::fetchItems
 
     if (state.isLoading)
@@ -63,7 +64,9 @@ fun ItemScreen(itemViewModel: ItemViewModel = hiltViewModel()) {
 @Composable
 fun LoadingSymbol() {
     Scaffold(topBar = { topAppBar() }) {
-        Column(modifier = Modifier.fillMaxSize().padding(it), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .padding(it), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
             CircularProgressIndicator()
             Spacer(modifier = Modifier.padding(4.dp))
             Text(text = stringResource(R.string.please_wait_loading))
@@ -74,7 +77,9 @@ fun LoadingSymbol() {
 @Composable
 fun Retry(errorMsg: String, retry: () -> Unit) {
     Scaffold(topBar = { topAppBar() }) {
-          Column(modifier = Modifier.fillMaxSize().padding(it), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+          Column(modifier = Modifier
+              .fillMaxSize()
+              .padding(it), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
              Text(text = errorMsg , style = MaterialTheme.typography.bodyLarge)
              Button(onClick = { retry.invoke() }) {
                  Text(text = stringResource(R.string.retry))
@@ -101,7 +106,10 @@ fun DisplayItems(state: NoteState) {
 
 @Composable
 fun Title(listId: Int) {
-    Text(text = "List ID : $listId", style = MaterialTheme.typography.bodyLarge, modifier = Modifier.fillMaxWidth().background(Color.Red).padding(8.dp))
+    Text(text = "List ID : $listId", style = MaterialTheme.typography.bodyLarge, modifier = Modifier
+        .fillMaxWidth()
+        .background(Color.Red)
+        .padding(8.dp))
 }
 
 @Composable
