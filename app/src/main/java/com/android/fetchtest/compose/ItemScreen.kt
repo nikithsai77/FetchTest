@@ -20,21 +20,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.fetchtest.R
+import com.android.fetchtest.common.UIState
 import com.android.fetchtest.data.Item
-import com.android.fetchtest.data.NoteState
-import com.android.fetchtest.mvvm.ItemViewModel
 
 @Composable
 fun topAppBar() {
@@ -49,16 +45,12 @@ fun topAppBar() {
 }
 
 @Composable
-fun ItemScreen(itemViewModel: ItemViewModel = hiltViewModel()) {
-    val state by itemViewModel.stateFlow.collectAsStateWithLifecycle()
-    val retry = itemViewModel::fetchItems
-
-    if (state.isLoading)
-        LoadingSymbol()
-    else if (state.isFailed)
-        Retry(state.errorMsg, retry)
-    else
-        DisplayItems(state)
+fun ItemScreen(uiState: UIState, retry: () -> Unit) {
+    when(uiState) {
+        is UIState.Loading -> LoadingSymbol()
+        is UIState.Error -> Retry(uiState.error, retry)
+        is UIState.Success -> DisplayItems(uiState.itemList)
+    }
 }
 
 @Composable
@@ -89,10 +81,10 @@ fun Retry(errorMsg: String, retry: () -> Unit) {
 }
 
 @Composable
-fun DisplayItems(state: NoteState) {
+fun DisplayItems(itemList: Map<Int, List<Item>>) {
     Scaffold(topBar = { topAppBar() }) {
         LazyColumn(contentPadding = it, modifier = Modifier.fillMaxWidth()) {
-            state.itemList.forEach { (listId, items) ->
+            itemList.forEach { (listId, items) ->
                 item {
                     Title(listId)
                 }
@@ -118,4 +110,11 @@ fun ItemRow(item: Item) {
         Text(text = "ID: ${item.id}", style = MaterialTheme.typography.bodySmall)
         Text(text = "Name: ${item.name}", style = MaterialTheme.typography.bodyMedium)
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun mPreview() {
+    DisplayItems(itemList = mapOf(1 to listOf(Item(listId = 1, name = "sample 0", id = 1), Item(listId = 1, name = "sample 1", id = 2), Item(listId = 1, name = "sample 2", id = 0)),
+                                  2 to listOf(Item(listId = 2, name = "sample 0", id = 2), Item(listId = 2, name = "sample 1", id = 2), Item(listId = 2, name = "sample 2", id = 2))))
 }
