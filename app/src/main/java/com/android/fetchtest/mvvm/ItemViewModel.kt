@@ -29,7 +29,7 @@ class ItemViewModel @Inject constructor(private val apiUseCase: ApiUseCase) : Vi
     }
 
     fun fetchItems() {
-        apiUseCase.invoke().onEach { newState ->
+        apiUseCase().onEach { newState ->
                       _uiState.update {
                           newState
                       }
