@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.android.fetchtest.compose
+package com.android.fetchtest.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -25,12 +25,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.fetchtest.R
-import com.android.fetchtest.common.UIState
-import com.android.fetchtest.data.Item
+import com.android.fetchtest.common.Resource
+import com.android.fetchtest.domain.Item
+import com.android.fetchtest.ui.theme.FetchTestTheme
 
 @Composable
 fun topAppBar() {
@@ -45,11 +48,11 @@ fun topAppBar() {
 }
 
 @Composable
-fun ItemScreen(uiState: UIState, retry: () -> Unit) {
-    when(uiState) {
-        is UIState.Loading -> LoadingSymbol()
-        is UIState.Error -> Retry(uiState.error, retry)
-        is UIState.Success -> DisplayItems(uiState.itemList)
+fun ItemScreen(resource: Resource<Map<Int, List<Item>>>, clickEvent: () -> Unit) {
+    when(resource) {
+        is Resource.Loading -> LoadingSymbol()
+        is Resource.Success -> DisplayItems(resource.data!!)
+        is Resource.Error -> Retry(resource.errorMessage!!, clickEvent)
     }
 }
 
@@ -69,13 +72,13 @@ fun LoadingSymbol() {
 @Composable
 fun Retry(errorMsg: String, retry: () -> Unit) {
     Scaffold(topBar = { topAppBar() }) {
-          Column(modifier = Modifier
-              .fillMaxSize()
-              .padding(it), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-             Text(text = errorMsg , style = MaterialTheme.typography.bodyLarge)
-             Button(onClick = { retry.invoke() }) {
-                 Text(text = stringResource(R.string.retry))
-             }
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .padding(it), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(text = errorMsg , textAlign = TextAlign.Center, style = MaterialTheme.typography.bodyLarge)
+            Button(onClick = { retry.invoke() }) {
+                Text(text = stringResource(R.string.retry))
+            }
         }
     }
 }
@@ -98,7 +101,7 @@ fun DisplayItems(itemList: Map<Int, List<Item>>) {
 
 @Composable
 fun Title(listId: Int) {
-    Text(text = "List ID : $listId", style = MaterialTheme.typography.bodyLarge, modifier = Modifier
+    Text(text = "List ID : $listId", style = MaterialTheme.typography.bodyLarge, overflow = TextOverflow.Ellipsis, modifier = Modifier
         .fillMaxWidth()
         .background(Color.Red)
         .padding(8.dp))
@@ -107,14 +110,28 @@ fun Title(listId: Int) {
 @Composable
 fun ItemRow(item: Item) {
     Column(modifier = Modifier.padding(8.dp)) {
-        Text(text = "ID: ${item.id}", style = MaterialTheme.typography.bodySmall)
-        Text(text = "Name: ${item.name}", style = MaterialTheme.typography.bodyMedium)
+        Text(text = "ID: ${item.id}", style = MaterialTheme.typography.bodySmall, overflow = TextOverflow.Ellipsis)
+        Text(text = "Name: ${item.name}", style = MaterialTheme.typography.bodyMedium, overflow = TextOverflow.Ellipsis)
     }
 }
 
-@Preview(showBackground = true)
+@PreviewLightDark
 @Composable
 fun mPreview() {
-    DisplayItems(itemList = mapOf(1 to listOf(Item(listId = 1, name = "sample 0", id = 1), Item(listId = 1, name = "sample 1", id = 2), Item(listId = 1, name = "sample 2", id = 0)),
-                                  2 to listOf(Item(listId = 2, name = "sample 0", id = 2), Item(listId = 2, name = "sample 1", id = 2), Item(listId = 2, name = "sample 2", id = 2))))
+    FetchTestTheme {
+        DisplayItems(
+            itemList = mapOf(
+                1 to listOf(
+                    Item(listId = 1, name = "sample 0", id = 1),
+                    Item(listId = 1, name = "sample 1", id = 2),
+                    Item(listId = 1, name = "sample 2", id = 0)
+                ),
+                2 to listOf(
+                    Item(listId = 2, name = "sample 0", id = 2),
+                    Item(listId = 2, name = "sample 1", id = 2),
+                    Item(listId = 2, name = "sample 2", id = 2)
+                )
+            )
+        )
+    }
 }

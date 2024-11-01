@@ -1,4 +1,4 @@
-package com.android.fetchtest
+package com.android.fetchtest.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -9,12 +9,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.android.fetchtest.common.UIState
-import com.android.fetchtest.compose.ItemScreen
-import com.android.fetchtest.mvvm.ItemViewModel
+import com.android.fetchtest.common.ClickEvent
+import com.android.fetchtest.common.Resource
 import com.android.fetchtest.ui.theme.FetchTestTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,18 +28,18 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val itemViewModel: ItemViewModel = hiltViewModel()
-                    val state by itemViewModel.uiState.collectAsStateWithLifecycle()
-                    ItemScreen(state) { itemViewModel.fetchItems() }
+                    val state by itemViewModel.resource.collectAsStateWithLifecycle()
+                    ItemScreen(state) { itemViewModel.onEvent(ClickEvent.Retry) }
                 }
             }
         }
     }
 }
 
-@Preview(showBackground = true)
+@PreviewLightDark
 @Composable
 fun GreetingPreview() {
     FetchTestTheme {
-        ItemScreen(UIState.Loading) {}
+        ItemScreen(Resource.Loading) {}
     }
 }

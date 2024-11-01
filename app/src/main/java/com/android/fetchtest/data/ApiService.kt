@@ -1,6 +1,6 @@
-package com.android.fetchtest.api
+package com.android.fetchtest.data
 
-import com.android.fetchtest.data.Item
+import com.android.fetchtest.domain.Item
 import retrofit2.http.GET
 
 interface ApiService {

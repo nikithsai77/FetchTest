@@ -1,9 +1,10 @@
 package com.android.fetchtest.di
 
-import com.android.fetchtest.api.ApiRepository
-import com.android.fetchtest.api.ApiService
-import com.android.fetchtest.common.Constant
-import com.android.fetchtest.api.ApiRepositoryImpl
+import com.android.fetchtest.BuildConfig
+import com.android.fetchtest.domain.ApiRepository
+import com.android.fetchtest.data.ApiRepositoryImpl
+import com.android.fetchtest.data.ApiService
+import com.android.fetchtest.domain.ApiUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,7 +20,7 @@ object Module {
     @Provides
     fun provideApiService(): ApiService {
         return Retrofit.Builder()
-            .baseUrl(Constant.BASE_URL)
+            .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApiService::class.java)
@@ -29,5 +30,11 @@ object Module {
     @Provides
     fun provideRepository(apiService: ApiService) : ApiRepository {
         return ApiRepositoryImpl(apiService)
+    }
+
+    @Singleton
+    @Provides
+    fun provideApiUseCase(apiRepository: ApiRepository) : ApiUseCase {
+        return ApiUseCase(apiRepository)
     }
 }
