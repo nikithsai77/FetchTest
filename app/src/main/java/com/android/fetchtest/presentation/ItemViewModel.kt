@@ -3,8 +3,7 @@ package com.android.fetchtest.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.fetchtest.common.ClickEvent
-import com.android.fetchtest.common.Resource
-import com.android.fetchtest.domain.Item
+import com.android.fetchtest.common.UIState
 import com.android.fetchtest.domain.ApiUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,8 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ItemViewModel @Inject constructor(private val apiUseCase: ApiUseCase) : ViewModel() {
-    private val _resource = MutableStateFlow<Resource<Map<Int, List<Item>>>>(Resource.Loading)
-    val resource: StateFlow<Resource<Map<Int, List<Item>>>> = _resource.asStateFlow()
+    private val _resource = MutableStateFlow<UIState>(UIState.Loading)
+    val resource: StateFlow<UIState> = _resource.asStateFlow()
 
     init {
         fetchItems()
