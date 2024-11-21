@@ -1,6 +1,6 @@
 package com.android.fetchtest.domain
 
-import com.android.fetchtest.common.UIState
+import com.android.fetchtest.common.Resource
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -10,9 +10,9 @@ import java.io.IOException
 
 class ApiUseCase(private val apiRepository: ApiRepository) {
 
-    operator fun invoke() : Flow<UIState> = flow {
+    operator fun invoke() : Flow<Resource<Map<Int, List<Item>>>> = flow {
         try {
-            emit(UIState.Loading)
+            emit(Resource.Loading)
             val fetchedItems = apiRepository.getItems()
             val finalItemsList = fetchedItems.filter {
                 !it.name.isNullOrBlank()
@@ -26,14 +26,14 @@ class ApiUseCase(private val apiRepository: ApiRepository) {
                     item.name!!.split(" ")[1].toInt()
                 }
             }
-            emit(UIState.Success(data = finalItemsList))
+            emit(Resource.Success(itemList = finalItemsList))
         }
         catch (e: IOException) {
-            emit(UIState.Error(error = "Couldn't Reach Server, Check Your Internet Connection."))
+            emit(Resource.Error(error = "Couldn't Reach Server, Check Your Internet Connection."))
         }
         catch (ex: Exception) {
             if (ex is CancellationException) throw  ex
-            emit(UIState.Error(error = ex.message ?: "SomeThing Went Wrong Try Again Later!"))
+            emit(Resource.Error(error = ex.message ?: "SomeThing Went Wrong Try Again Later!"))
         }
     }.flowOn(Dispatchers.Default)
 

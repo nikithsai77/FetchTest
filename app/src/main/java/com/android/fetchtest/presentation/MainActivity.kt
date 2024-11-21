@@ -13,7 +13,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.fetchtest.common.ClickEvent
-import com.android.fetchtest.common.UIState
+import com.android.fetchtest.common.Resource
 import com.android.fetchtest.ui.theme.FetchTestTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -40,6 +40,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GreetingPreview() {
     FetchTestTheme {
-        ItemScreen(UIState.Loading) {}
+        ItemScreen(Resource.Loading) {}
     }
 }
