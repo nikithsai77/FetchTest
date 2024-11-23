@@ -10,10 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.fetchtest.common.ClickEvent
 import com.android.fetchtest.common.Resource
+import com.android.fetchtest.domain.Item
 import com.android.fetchtest.ui.theme.FetchTestTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -38,8 +41,16 @@ class MainActivity : ComponentActivity() {
 
 @PreviewLightDark
 @Composable
-fun GreetingPreview() {
+fun GreetingPreview(
+    @PreviewParameter(ResourceProvide::class) resource: Resource<Map<Int, List<Item>>>
+) {
     FetchTestTheme {
-        ItemScreen(Resource.Loading) {}
+        ItemScreen(resource) {}
     }
 }
+
+class ResourceProvide: PreviewParameterProvider<Resource<Map<Int, List<Item>>>> {
+    override val values: Sequence<Resource<Map<Int, List<Item>>>> = resourceList
+}
+
+val resourceList = sequenceOf(Resource.Loading, Resource.Success(itemList = mapOf(1 to listOf(Item(listId = 1, name = "sample 0", id = 1), Item(listId = 1, name = "sample 1", id = 2), Item(listId = 1, name = "sample 2", id = 0)))), Resource.Error(error = "SomeThingWent Wrong Try Again Later!"))
