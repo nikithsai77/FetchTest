@@ -42,14 +42,14 @@ class MainActivity : ComponentActivity() {
 @PreviewLightDark
 @Composable
 fun GreetingPreview(
-    @PreviewParameter(ResourceProvide::class) resource: Resource<Map<Int, List<Item>>>
+    @PreviewParameter(ResourceProvider::class) resource: Resource<Map<Int, List<Item>>>
 ) {
     FetchTestTheme {
         ItemScreen(resource) {}
     }
 }
 
-class ResourceProvide: PreviewParameterProvider<Resource<Map<Int, List<Item>>>> {
+class ResourceProvider: PreviewParameterProvider<Resource<Map<Int, List<Item>>>> {
     override val values: Sequence<Resource<Map<Int, List<Item>>>> = resourceList
 }
 
