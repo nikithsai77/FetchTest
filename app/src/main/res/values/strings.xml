@@ -1,5 +1,16 @@
 <resources>
     <string name="app_name">FetchTest</string>
     <string name="retry">Retry</string>
-    <string name="please_wait_loading">Please Wait Loading...</string>
+    <string name="UNKNOWN">An unknown error occurred</string>
+    <string name="REQUEST_TIMEOUT">The Request Timed Out</string>
+    <string name="please_wait_loading">Please Wait Loading…</string>
+    <string name="to_many_req">Too Many Requests, Try Again Later!</string>
+    <string name="SERVER_ERROR">Oops, something went wrong at server side. Please Try Again.</string>
+    <string name="Unauthorized">Authentication is required and has failed or has not yet been provided, Try Again Later!</string>
+    <string name="NO_INTERNET">Couldn\'t Reach Server, Check Your Internet Connection.</string>
+    <string name="PAYLOAD_TOO_LARGE">The File you tried to upload was too large.</string>
+    <string name="BAD_REQUEST">Bad Network Request Try Again Later!</string>
+    <string name="NOT_FOUND">Not Found, Try Again Later!</string>
+    <string name="SERVICEUnAvailable">The server is temporarily unable. Try Again Later!</string>
+    <string name="some_thing">\"SomeThing Went Wrong Try Again Later!\"</string>
 </resources>

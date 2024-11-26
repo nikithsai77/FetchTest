@@ -1,47 +1,46 @@
 package com.android.fetchtest.domain
 
-import com.android.fetchtest.common.Resource
-import kotlinx.coroutines.CancellationException
+import com.android.fetchtest.common.DataError
+import com.android.fetchtest.common.Result
+import com.android.fetchtest.data.Item
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
-import java.io.IOException
 
 class ApiUseCase(private val apiRepository: ApiRepository) {
 
-    operator fun invoke() : Flow<Resource<Map<Int, List<Item>>>> = flow {
-        try {
-            emit(Resource.Loading)
-            val fetchedItems = apiRepository.getItems()
-            val finalItemsList = withContext(Dispatchers.Default) {
-                val map = fetchedItems.filter {
-                    ensureActive()
-                    !it.name.isNullOrBlank()
-                }.sortedBy {
-                    ensureActive()
-                    it.listId
-                }.groupBy {
-                    ensureActive()
-                    it.listId
-                }.toMutableMap()
-                map.forEach { (key, items) ->
-                    ensureActive()
-                  map[key] = items.sortedBy { item ->
-                     ensureActive()
-                     item.name!!.split(" ")[1].toInt()
-                  }
+    operator fun invoke() : Flow<Result<Map<Int, List<Item>>, DataError>> = flow {
+        val res = apiRepository.getItems()
+        res.collect { result ->
+            when(result) {
+                is Result.Loading -> emit(result)
+                is Result.Error -> emit(Result.Error(error = result.error))
+                is Result.Success -> {
+                    val finalItemsList = withContext(Dispatchers.Default) {
+                        val map = result.data.filter {
+                            ensureActive()
+                            !it.name.isNullOrBlank()
+                        }.sortedBy {
+                            ensureActive()
+                            it.listId
+                        }.groupBy {
+                            ensureActive()
+                            it.listId
+                        }.toMutableMap()
+                        map.forEach { (key, items) ->
+                            ensureActive()
+                            map[key] = items.sortedBy { item ->
+                                ensureActive()
+                                item.name!!.split(" ")[1].toInt()
+                            }
+                        }
+                        map
+                    }
+                    emit(Result.Success(data = finalItemsList))
                 }
-                map
             }
-            emit(Resource.Success(itemList = finalItemsList))
-        }
-        catch (ex: Exception) {
-            if (ex is CancellationException) throw  ex
-            val errorMessage = if (ex is IOException) "Couldn't Reach Server, Check Your Internet Connection"
-            else ex.message ?: "SomeThing Went Wrong Try Again Later!"
-            emit(Resource.Error(error = errorMessage))
         }
     }
 

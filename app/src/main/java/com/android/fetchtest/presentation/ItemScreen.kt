@@ -31,8 +31,10 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.fetchtest.R
-import com.android.fetchtest.common.Resource
-import com.android.fetchtest.domain.Item
+import com.android.fetchtest.common.DataError
+import com.android.fetchtest.common.Result
+import com.android.fetchtest.common.getErrorDescription
+import com.android.fetchtest.data.Item
 import com.android.fetchtest.ui.theme.FetchTestTheme
 
 @Composable
@@ -48,11 +50,11 @@ fun topAppBar() {
 }
 
 @Composable
-fun ItemScreen(resource: Resource<Map<Int, List<Item>>>, clickEvent: () -> Unit) {
+fun ItemScreen(resource: Result<Map<Int, List<Item>>, DataError>, clickEvent: () -> Unit) {
     when(resource) {
-        is Resource.Loading -> LoadingSymbol()
-        is Resource.Success -> DisplayItems(resource.data!!)
-        is Resource.Error -> Retry(resource.errorMessage!!, clickEvent)
+        is Result.Loading -> LoadingSymbol()
+        is Result.Success -> DisplayItems(resource.data)
+        is Result.Error -> Retry(resource.error.getErrorDescription(), clickEvent)
     }
 }
 
