@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.android.fetchtest.presentation
 
 import androidx.compose.foundation.background
@@ -15,7 +13,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -38,7 +35,7 @@ import com.android.fetchtest.data.Item
 import com.android.fetchtest.ui.theme.FetchTestTheme
 
 @Composable
-fun topAppBar() {
+fun TopAppBar() {
     Row(modifier = Modifier
         .fillMaxWidth()
         .wrapContentHeight()
@@ -60,7 +57,7 @@ fun ItemScreen(resource: Result<Map<Int, List<Item>>, DataError>, clickEvent: ()
 
 @Composable
 fun LoadingSymbol() {
-    Scaffold(topBar = { topAppBar() }) {
+    Scaffold(topBar = { TopAppBar() }) {
         Column(modifier = Modifier
             .fillMaxSize()
             .padding(it), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
@@ -73,7 +70,7 @@ fun LoadingSymbol() {
 
 @Composable
 fun Retry(errorMsg: String, retry: () -> Unit) {
-    Scaffold(topBar = { topAppBar() }) {
+    Scaffold(topBar = { TopAppBar() }) {
         Column(modifier = Modifier
             .fillMaxSize()
             .padding(it), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
@@ -87,7 +84,7 @@ fun Retry(errorMsg: String, retry: () -> Unit) {
 
 @Composable
 fun DisplayItems(itemList: Map<Int, List<Item>>) {
-    Scaffold(topBar = { topAppBar() }) {
+    Scaffold(topBar = { TopAppBar() }) {
         LazyColumn(contentPadding = it, modifier = Modifier.fillMaxWidth()) {
             itemList.forEach { (listId, items) ->
                 item {
@@ -119,7 +116,7 @@ fun ItemRow(item: Item) {
 
 @PreviewLightDark
 @Composable
-fun mPreview() {
+fun MPreview() {
     FetchTestTheme {
         DisplayItems(
             itemList = mapOf(

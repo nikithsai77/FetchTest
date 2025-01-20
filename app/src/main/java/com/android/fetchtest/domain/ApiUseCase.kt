@@ -9,10 +9,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 
-class ApiUseCase(private val apiRepository: ApiRepository) {
+class ApiUseCase(private val repository: Repository) {
 
     operator fun invoke() : Flow<Result<Map<Int, List<Item>>, DataError>> = flow {
-        val res = apiRepository.getItems()
+        val res = repository.getItems()
         res.collect { result ->
             when(result) {
                 is Result.Loading -> emit(result)

@@ -5,6 +5,6 @@ import com.android.fetchtest.common.Result
 import com.android.fetchtest.data.Item
 import kotlinx.coroutines.flow.Flow
 
-interface ApiRepository {
+interface Repository {
     suspend fun getItems(): Flow<Result<Collection<Item>, DataError>>
 }

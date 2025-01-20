@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">FetchTest</string>
     <string name="retry">Retry</string>
-    <string name="UNKNOWN">An unknown error occurred</string>
+    <string name="Conflict">Conflict</string>
     <string name="REQUEST_TIMEOUT">The Request Timed Out</string>
     <string name="please_wait_loading">Please Wait Loading…</string>
     <string name="to_many_req">Too Many Requests, Try Again Later!</string>
@@ -11,6 +11,9 @@
     <string name="PAYLOAD_TOO_LARGE">The File you tried to upload was too large.</string>
     <string name="BAD_REQUEST">Bad Network Request Try Again Later!</string>
     <string name="NOT_FOUND">Not Found, Try Again Later!</string>
-    <string name="SERVICEUnAvailable">The server is temporarily unable. Try Again Later!</string>
-    <string name="some_thing">\"SomeThing Went Wrong Try Again Later!\"</string>
+    <string name="server_decline">The request was valid, but the server is refusing action.</string>
+    <string name="Service_UnAvailable">The server is temporarily unable. Try Again Later!</string>
+    <string name="some_thing">SomeThing Went Wrong Try Again Later!</string>
+    <string name="the_request_method_is_not_supported">The request method is not supported</string>
+    <string name="UNSUPPORTED_MEDIA_TYPE">The Request Entity Has a Media Type Which The Server (or) Resource Does Not Support.</string>
 </resources>

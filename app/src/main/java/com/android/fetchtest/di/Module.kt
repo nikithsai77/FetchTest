@@ -1,7 +1,7 @@
 package com.android.fetchtest.di
 
 import com.android.fetchtest.BuildConfig
-import com.android.fetchtest.domain.ApiRepository
+import com.android.fetchtest.domain.Repository
 import com.android.fetchtest.data.ApiRepositoryImpl
 import com.android.fetchtest.data.ApiService
 import com.android.fetchtest.domain.ApiUseCase
@@ -28,13 +28,13 @@ object Module {
 
     @Singleton
     @Provides
-    fun provideRepository(apiService: ApiService) : ApiRepository {
+    fun provideRepository(apiService: ApiService) : Repository {
         return ApiRepositoryImpl(apiService)
     }
 
     @Singleton
     @Provides
-    fun provideApiUseCase(apiRepository: ApiRepository) : ApiUseCase {
-        return ApiUseCase(apiRepository)
+    fun provideApiUseCase(repository: Repository) : ApiUseCase {
+        return ApiUseCase(repository)
     }
 }
