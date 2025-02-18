@@ -1,7 +1,5 @@
 package com.android.fetchtest.domain
 
-import com.android.fetchtest.common.DataError
-import com.android.fetchtest.common.Result
 import com.android.fetchtest.data.Item
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive
@@ -16,7 +14,7 @@ class ApiUseCase(private val repository: Repository) {
         res.collect { result ->
             when(result) {
                 is Result.Loading -> emit(result)
-                is Result.Error -> emit(Result.Error(error = result.error))
+                is Result.Error -> emit(result)
                 is Result.Success -> {
                     val finalItemsList = withContext(Dispatchers.Default) {
                         val map = result.data.filter {

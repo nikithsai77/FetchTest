@@ -1,27 +1,9 @@
-package com.android.fetchtest.common
+package com.android.fetchtest.presentation
 
+import com.android.fetchtest.R
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import com.android.fetchtest.R
-
-sealed interface DataError {
-    enum class NetworkError: DataError {
-        Unauthorized,
-        SERVER_ERROR,
-        NO_INTERNET,
-        BAD_REQUEST,
-        NOT_FOUND,
-        Conflict,
-        Forbidden,
-        REQUEST_TIMEOUT,
-        TOO_MANY_REQUESTS,
-        PAYLOAD_TOO_LARGE,
-        SERVICEUnAvailable,
-        REQUEST_NOT_ALLOWED,
-        UNSUPPORTED_MEDIA_TYPE,
-        SOMETHING_WENT_WRONG_TRY_AGAIN_LATER
-    }
-}
+import com.android.fetchtest.domain.DataError
 
 @Composable
 fun DataError.getErrorDescription(): String {

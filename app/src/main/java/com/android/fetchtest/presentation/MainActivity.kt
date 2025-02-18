@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -15,8 +16,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.fetchtest.common.ClickEvent
-import com.android.fetchtest.common.DataError
-import com.android.fetchtest.common.Result
+import com.android.fetchtest.domain.DataError
+import com.android.fetchtest.domain.Result
 import com.android.fetchtest.data.Item
 import com.android.fetchtest.ui.theme.FetchTestTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,7 +34,8 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val itemViewModel: ItemViewModel = hiltViewModel()
                     val state by itemViewModel.resource.collectAsStateWithLifecycle()
-                    ItemScreen(state) { itemViewModel.onEvent(ClickEvent.Retry) }
+                    val clickEvent = remember { { itemViewModel.onEvent(ClickEvent.Retry) } }
+                    ItemScreen(state, clickEvent)
                 }
             }
         }

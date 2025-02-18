@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -28,9 +29,9 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.fetchtest.R
-import com.android.fetchtest.common.DataError
-import com.android.fetchtest.common.Result
-import com.android.fetchtest.common.getErrorDescription
+import com.android.fetchtest.common.TestTags
+import com.android.fetchtest.domain.DataError
+import com.android.fetchtest.domain.Result
 import com.android.fetchtest.data.Item
 import com.android.fetchtest.ui.theme.FetchTestTheme
 
@@ -63,7 +64,7 @@ fun LoadingSymbol() {
             .padding(it), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
             CircularProgressIndicator()
             Spacer(modifier = Modifier.padding(4.dp))
-            Text(text = stringResource(R.string.please_wait_loading))
+            Text(text = stringResource(R.string.please_wait_loading), Modifier.testTag(tag = TestTags.LOADING))
         }
     }
 }
@@ -73,7 +74,8 @@ fun Retry(errorMsg: String, retry: () -> Unit) {
     Scaffold(topBar = { TopAppBar() }) {
         Column(modifier = Modifier
             .fillMaxSize()
-            .padding(it), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+            .padding(it)
+            .testTag(tag = TestTags.RETRY), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
             Text(text = errorMsg , textAlign = TextAlign.Center, style = MaterialTheme.typography.bodyLarge)
             Button(onClick = { retry.invoke() }) {
                 Text(text = stringResource(R.string.retry))
@@ -85,7 +87,7 @@ fun Retry(errorMsg: String, retry: () -> Unit) {
 @Composable
 fun DisplayItems(itemList: Map<Int, List<Item>>) {
     Scaffold(topBar = { TopAppBar() }) {
-        LazyColumn(contentPadding = it, modifier = Modifier.fillMaxWidth()) {
+        LazyColumn(contentPadding = it, modifier = Modifier.fillMaxWidth().testTag(tag = TestTags.SUCCESS)) {
             itemList.forEach { (listId, items) ->
                 item {
                     Title(listId)

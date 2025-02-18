@@ -3,8 +3,8 @@ package com.android.fetchtest.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.fetchtest.common.ClickEvent
-import com.android.fetchtest.common.DataError
-import com.android.fetchtest.common.Result
+import com.android.fetchtest.domain.DataError
+import com.android.fetchtest.domain.Result
 import com.android.fetchtest.data.Item
 import com.android.fetchtest.domain.ApiUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
