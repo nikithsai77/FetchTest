@@ -15,10 +15,9 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.android.fetchtest.common.ClickEvent
+import com.android.fetchtest.data.Item
 import com.android.fetchtest.domain.DataError
 import com.android.fetchtest.domain.Result
-import com.android.fetchtest.data.Item
 import com.android.fetchtest.ui.theme.FetchTestTheme
 import dagger.hilt.android.AndroidEntryPoint
 

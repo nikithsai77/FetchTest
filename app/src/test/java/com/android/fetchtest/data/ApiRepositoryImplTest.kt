@@ -7,6 +7,7 @@ import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Before
 import org.junit.Test
+import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
@@ -17,6 +18,8 @@ import kotlin.test.fail
 class ApiRepositoryImplTest {
     @Mock
     private lateinit var apiService: ApiService
+    @InjectMocks
+    private lateinit var apiRepositoryImpl: ApiRepositoryImpl
 
     @Before
     fun setUp() {
@@ -31,8 +34,7 @@ class ApiRepositoryImplTest {
             Item(listId = 3, name = "okay 3", id = 3)
         )
         Mockito.`when`(apiService.getItems()).thenReturn(successfulOfItems)
-        val api = ApiRepositoryImpl(apiService)
-        api.getItems().collect {
+        apiRepositoryImpl.getItems().collect {
             when(it) {
                 is Result.Loading -> assertEquals(Result.Loading, it)
                 is Result.Success -> assertEquals(successfulOfItems, it.data)
@@ -46,8 +48,7 @@ class ApiRepositoryImplTest {
         Mockito.`when`(apiService.getItems()).thenThrow(
             HttpException(Response.error<HttpException>(404, "".toResponseBody(contentType = null)))
         )
-        val apiFailure = ApiRepositoryImpl(apiService)
-        apiFailure.getItems().collect {
+        apiRepositoryImpl.getItems().collect {
             when(it) {
                 is Result.Loading -> assertEquals(Result.Loading, it)
                 is Result.Success -> fail("Unexpected result type $it")
@@ -59,8 +60,7 @@ class ApiRepositoryImplTest {
     @Test
     fun `test fails API call when other exception raise`() = runTest {
         Mockito.`when`(apiService.getItems()).thenThrow(RuntimeException())
-        val apiFailure = ApiRepositoryImpl(apiService)
-        apiFailure.getItems().collect {
+        apiRepositoryImpl.getItems().collect {
             when(it) {
                 is Result.Loading -> assertEquals(Result.Loading, it)
                 is Result.Success -> fail("Unexpected result type $it")

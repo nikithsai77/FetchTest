@@ -13,8 +13,6 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.android.fetchtest.common.ClickEvent
-import com.android.fetchtest.common.TestTags
 import com.android.fetchtest.di.Module
 import com.android.fetchtest.ui.theme.FetchTestTheme
 import dagger.hilt.android.testing.HiltAndroidRule

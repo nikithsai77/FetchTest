@@ -1,4 +1,4 @@
-package com.android.fetchtest.common
+package com.android.fetchtest.presentation
 
 object TestTags {
     const val RETRY = "Retry"

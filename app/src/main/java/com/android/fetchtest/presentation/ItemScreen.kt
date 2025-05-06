@@ -29,10 +29,9 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.fetchtest.R
-import com.android.fetchtest.common.TestTags
+import com.android.fetchtest.data.Item
 import com.android.fetchtest.domain.DataError
 import com.android.fetchtest.domain.Result
-import com.android.fetchtest.data.Item
 import com.android.fetchtest.ui.theme.FetchTestTheme
 
 @Composable
