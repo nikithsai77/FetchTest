@@ -1,22 +1,16 @@
-package com.android.fetchtest.presentation
+package com.android.fetchtest.presentation.mainActivity
 
+import javax.inject.Inject
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.fetchtest.data.Item
-import com.android.fetchtest.domain.ApiUseCase
-import com.android.fetchtest.domain.DataError
 import com.android.fetchtest.domain.Result
+import com.android.fetchtest.domain.DataError
+import com.android.fetchtest.domain.ApiUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
-import javax.inject.Inject
+import com.android.fetchtest.presentation.ClickEvent
 
 @HiltViewModel
 class ItemViewModel @Inject constructor(private val apiUseCase: ApiUseCase) : ViewModel() {
