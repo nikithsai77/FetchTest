@@ -4,7 +4,7 @@ import com.android.fetchtest.domain.ApiUseCase
 import com.android.fetchtest.domain.DataError
 import com.android.fetchtest.domain.Repository
 import com.android.fetchtest.domain.Result
-import com.android.fetchtest.presentation.ItemViewModel
+import com.android.fetchtest.presentation.mainActivity.ItemViewModel
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

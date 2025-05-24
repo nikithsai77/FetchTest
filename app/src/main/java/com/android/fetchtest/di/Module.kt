@@ -1,17 +1,15 @@
 package com.android.fetchtest.di
 
-import com.android.fetchtest.BuildConfig
-import com.android.fetchtest.domain.Repository
-import com.android.fetchtest.data.ApiRepositoryImpl
-import com.android.fetchtest.data.ApiService
-import com.android.fetchtest.domain.ApiUseCase
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import dagger.hilt.InstallIn
 import javax.inject.Singleton
+import com.android.fetchtest.data.*
+import com.android.fetchtest.domain.*
+import com.android.fetchtest.BuildConfig
+import dagger.hilt.components.SingletonComponent
+import retrofit2.converter.gson.GsonConverterFactory
 
 @Module
 @InstallIn(SingletonComponent::class)

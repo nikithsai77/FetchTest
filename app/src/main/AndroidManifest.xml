@@ -16,9 +16,8 @@
         android:theme="@style/Theme.FetchTest"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.MainActivity"
+            android:name=".presentation.mainActivity.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.FetchTest">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,10 +1,12 @@
-package com.android.fetchtest.presentation
+package com.android.fetchtest.presentation.mainActivity
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -13,11 +15,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.fetchtest.data.Item
 import com.android.fetchtest.domain.DataError
 import com.android.fetchtest.domain.Result
+import com.android.fetchtest.presentation.ClickEvent
+import com.android.fetchtest.presentation.TopAppBar
 import com.android.fetchtest.ui.theme.FetchTestTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,10 +36,12 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val itemViewModel: ItemViewModel = hiltViewModel()
-                    val state by itemViewModel.resource.collectAsStateWithLifecycle()
-                    val clickEvent = remember { { itemViewModel.onEvent(ClickEvent.Retry) } }
-                    ItemScreen(state, clickEvent)
+                    Scaffold(topBar = { TopAppBar(title = "Fetch") }) {
+                        val itemViewModel: ItemViewModel = hiltViewModel()
+                        val state by itemViewModel.resource.collectAsStateWithLifecycle()
+                        val clickEvent = remember { { itemViewModel.onEvent(ClickEvent.Retry) } }
+                        ItemScreen(it, state, clickEvent)
+                    }
                 }
             }
         }
@@ -47,7 +54,7 @@ fun GreetingPreview(
     @PreviewParameter(ResourceProvider::class) resource: Result<Map<Int, List<Item>>, DataError>
 ) {
     FetchTestTheme {
-        ItemScreen(resource) {}
+        ItemScreen(paddingValue = PaddingValues(10.dp), resource = resource) {}
     }
 }
 
