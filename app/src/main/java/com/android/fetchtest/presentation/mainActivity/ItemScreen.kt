@@ -36,27 +36,27 @@ fun ItemScreen(
     clickEvent: () -> Unit
 ) {
     when(resource) {
-        is Result.Loading -> LoadingSymbol(paddingValue)
-        is Result.Success -> DisplayItems(paddingValue, resource.data)
-        is Result.Error -> Retry(paddingValue, resource.error.getErrorDescription(), clickEvent)
+        is Result.Loading -> LoadingSymbol(paddingValue = paddingValue)
+        is Result.Success -> DisplayItems(paddingValue = paddingValue, itemList = resource.data)
+        is Result.Error -> Retry(paddingValue = paddingValue, errorMsg = resource.error.getErrorDescription(), retry = clickEvent)
     }
 }
 
 @Composable
 fun LoadingSymbol(paddingValue: PaddingValues) {
-    Column(modifier = Modifier.fillMaxSize().padding(paddingValue), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(modifier = Modifier.fillMaxSize().padding(paddingValues = paddingValue), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
         CircularProgressIndicator()
-        Spacer(modifier = Modifier.padding(4.dp))
-        Text(text = stringResource(R.string.please_wait_loading), Modifier.testTag(tag = TestTags.LOADING))
+        Spacer(modifier = Modifier.padding(all = 4.dp))
+        Text(text = stringResource(id = R.string.please_wait_loading), Modifier.testTag(tag = TestTags.LOADING))
     }
 }
 
 @Composable
 fun Retry(paddingValue: PaddingValues, errorMsg: String, retry: () -> Unit) {
-    Column(modifier = Modifier.fillMaxSize().padding(paddingValue).testTag(tag = TestTags.RETRY), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(modifier = Modifier.fillMaxSize().padding(paddingValues = paddingValue).testTag(tag = TestTags.RETRY), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
         Text(text = errorMsg , textAlign = TextAlign.Center, style = MaterialTheme.typography.bodyLarge)
         Button(onClick = { retry.invoke() }) {
-            Text(text = stringResource(R.string.retry))
+            Text(text = stringResource(id = R.string.retry))
         }
     }
 }
@@ -80,12 +80,12 @@ fun Title(listId: Int) {
     Text(text = "List ID : $listId", style = MaterialTheme.typography.bodyLarge, overflow = TextOverflow.Ellipsis, modifier = Modifier
         .fillMaxWidth()
         .background(Color.Red)
-        .padding(8.dp))
+        .padding(all = 8.dp))
 }
 
 @Composable
 fun ItemRow(item: Item) {
-    Column(modifier = Modifier.padding(8.dp)) {
+    Column(modifier = Modifier.padding(all = 8.dp)) {
         Text(text = "ID: ${item.id}", style = MaterialTheme.typography.bodySmall, overflow = TextOverflow.Ellipsis)
         Text(text = "Name: ${item.name}", style = MaterialTheme.typography.bodyMedium, overflow = TextOverflow.Ellipsis)
     }
@@ -96,7 +96,7 @@ fun ItemRow(item: Item) {
 fun MPreview() {
     FetchTestTheme {
         DisplayItems(
-            paddingValue = PaddingValues(10.dp),
+            paddingValue = PaddingValues(all = 10.dp),
             itemList = mapOf(
                 1 to listOf(
                     Item(listId = 1, name = "sample 0", id = 1),

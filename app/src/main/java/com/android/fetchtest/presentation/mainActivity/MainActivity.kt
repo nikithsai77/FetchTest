@@ -22,7 +22,7 @@ import com.android.fetchtest.data.Item
 import com.android.fetchtest.domain.DataError
 import com.android.fetchtest.domain.Result
 import com.android.fetchtest.presentation.ClickEvent
-import com.android.fetchtest.presentation.TopAppBar
+import com.android.fetchtest.presentation.composable.TopAppBar
 import com.android.fetchtest.ui.theme.FetchTestTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
                         val itemViewModel: ItemViewModel = hiltViewModel()
                         val state by itemViewModel.resource.collectAsStateWithLifecycle()
                         val clickEvent = remember { { itemViewModel.onEvent(ClickEvent.Retry) } }
-                        ItemScreen(it, state, clickEvent)
+                        ItemScreen(paddingValue = it, resource = state, clickEvent = clickEvent)
                     }
                 }
             }
@@ -51,10 +51,10 @@ class MainActivity : ComponentActivity() {
 @PreviewLightDark
 @Composable
 fun GreetingPreview(
-    @PreviewParameter(ResourceProvider::class) resource: Result<Map<Int, List<Item>>, DataError>
+    @PreviewParameter(provider = ResourceProvider::class) resource: Result<Map<Int, List<Item>>, DataError>
 ) {
     FetchTestTheme {
-        ItemScreen(paddingValue = PaddingValues(10.dp), resource = resource) {}
+        ItemScreen(paddingValue = PaddingValues(all = 10.dp), resource = resource) {}
     }
 }
 

@@ -15,8 +15,8 @@ import com.android.fetchtest.presentation.ClickEvent
 @HiltViewModel
 class ItemViewModel @Inject constructor(private val apiUseCase: ApiUseCase) : ViewModel() {
     private var job: Job? = null
-    private val _resource = MutableStateFlow<Result<Map<Int, List<Item>>, DataError>>(Result.Loading)
-    val resource: StateFlow<Result<Map<Int, List<Item>>, DataError>> = _resource.onStart { fetchItems() }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L), Result.Loading)
+    private val _resource = MutableStateFlow<Result<Map<Int, List<Item>>, DataError>>(value = Result.Loading)
+    val resource: StateFlow<Result<Map<Int, List<Item>>, DataError>> = _resource.onStart { fetchItems() }.stateIn(scope = viewModelScope, started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L), initialValue = Result.Loading)
 
     private fun fetchItems() {
         if (job == null) {

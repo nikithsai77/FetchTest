@@ -15,6 +15,7 @@ import androidx.compose.ui.test.performClick
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.fetchtest.di.Module
+import com.android.fetchtest.presentation.composable.TopAppBar
 import com.android.fetchtest.presentation.mainActivity.ItemScreen
 import com.android.fetchtest.presentation.mainActivity.ItemViewModel
 import com.android.fetchtest.presentation.mainActivity.MainActivity
@@ -45,10 +46,10 @@ class MainActivityTest {
                         modifier = Modifier.fillMaxSize(),
                         color = MaterialTheme.colorScheme.background
                     ) {
-                        Scaffold(topBar = { TopAppBar(title = "Fetch") }) {
+                        Scaffold(topBar = { TopAppBar(title = "Testing Fetch") }) {
                             val itemViewModel: ItemViewModel = hiltViewModel()
                             val state by itemViewModel.resource.collectAsStateWithLifecycle()
-                            ItemScreen(it, state) { itemViewModel.onEvent(ClickEvent.Retry) }
+                            ItemScreen(paddingValue = it, resource = state) { itemViewModel.onEvent(ClickEvent.Retry) }
                         }
                     }
                 }
