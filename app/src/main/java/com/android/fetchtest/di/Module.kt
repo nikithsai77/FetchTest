@@ -5,6 +5,7 @@ import dagger.Provides
 import retrofit2.Retrofit
 import dagger.hilt.InstallIn
 import javax.inject.Singleton
+import okhttp3.OkHttpClient
 import com.android.fetchtest.data.*
 import com.android.fetchtest.domain.*
 import com.android.fetchtest.BuildConfig
@@ -20,6 +21,7 @@ object Module {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
+            .client(OkHttpClient.Builder().build())
             .build()
             .create(ApiService::class.java)
     }

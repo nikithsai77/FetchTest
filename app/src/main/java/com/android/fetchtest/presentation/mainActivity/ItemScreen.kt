@@ -3,7 +3,6 @@ package com.android.fetchtest.presentation.mainActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,8 +21,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.android.fetchtest.R
-import com.android.fetchtest.data.Item
 import com.android.fetchtest.domain.DataError
+import com.android.fetchtest.domain.FetchItem
 import com.android.fetchtest.domain.Result
 import com.android.fetchtest.presentation.getErrorDescription
 import com.android.fetchtest.presentation.tag.TestTags
@@ -31,29 +30,29 @@ import com.android.fetchtest.ui.theme.FetchTestTheme
 
 @Composable
 fun ItemScreen(
-    paddingValue: PaddingValues,
-    resource: Result<Map<Int, List<Item>>, DataError>,
+    modifier: Modifier = Modifier,
+    resource: Result<Map<Int, List<FetchItem>>, DataError>,
     clickEvent: () -> Unit
 ) {
     when(resource) {
-        is Result.Loading -> LoadingSymbol(paddingValue = paddingValue)
-        is Result.Success -> DisplayItems(paddingValue = paddingValue, itemList = resource.data)
-        is Result.Error -> Retry(paddingValue = paddingValue, errorMsg = resource.error.getErrorDescription(), retry = clickEvent)
+        is Result.Loading -> LoadingSymbol(modifier)
+        is Result.Success -> DisplayItems(modifier, itemList = resource.data)
+        is Result.Error -> Retry(modifier, errorMsg = resource.error.getErrorDescription(), retry = clickEvent)
     }
 }
 
 @Composable
-fun LoadingSymbol(paddingValue: PaddingValues) {
-    Column(modifier = Modifier.fillMaxSize().padding(paddingValues = paddingValue), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+fun LoadingSymbol(modifier: Modifier = Modifier) {
+    Column(modifier = modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
         CircularProgressIndicator()
         Spacer(modifier = Modifier.padding(all = 4.dp))
-        Text(text = stringResource(id = R.string.please_wait_loading), Modifier.testTag(tag = TestTags.LOADING))
+        Text(text = stringResource(id = R.string.please_wait_loading), modifier = Modifier.testTag(tag = TestTags.LOADING))
     }
 }
 
 @Composable
-fun Retry(paddingValue: PaddingValues, errorMsg: String, retry: () -> Unit) {
-    Column(modifier = Modifier.fillMaxSize().padding(paddingValues = paddingValue).testTag(tag = TestTags.RETRY), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+fun Retry(modifier: Modifier = Modifier, errorMsg: String, retry: () -> Unit) {
+    Column(modifier = modifier.fillMaxSize().testTag(tag = TestTags.RETRY), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
         Text(text = errorMsg , textAlign = TextAlign.Center, style = MaterialTheme.typography.bodyLarge)
         Button(onClick = { retry.invoke() }) {
             Text(text = stringResource(id = R.string.retry))
@@ -62,8 +61,8 @@ fun Retry(paddingValue: PaddingValues, errorMsg: String, retry: () -> Unit) {
 }
 
 @Composable
-fun DisplayItems(paddingValue: PaddingValues, itemList: Map<Int, List<Item>>) {
-    LazyColumn(contentPadding = paddingValue, modifier = Modifier.fillMaxWidth().testTag(tag = TestTags.SUCCESS)) {
+fun DisplayItems(modifier: Modifier = Modifier, itemList: Map<Int, List<FetchItem>>) {
+    LazyColumn(modifier = modifier.fillMaxWidth().testTag(tag = TestTags.SUCCESS)) {
         itemList.forEach { (listId, items) ->
             item {
                 Title(listId)
@@ -84,7 +83,7 @@ fun Title(listId: Int) {
 }
 
 @Composable
-fun ItemRow(item: Item) {
+fun ItemRow(item: FetchItem) {
     Column(modifier = Modifier.padding(all = 8.dp)) {
         Text(text = "ID: ${item.id}", style = MaterialTheme.typography.bodySmall, overflow = TextOverflow.Ellipsis)
         Text(text = "Name: ${item.name}", style = MaterialTheme.typography.bodyMedium, overflow = TextOverflow.Ellipsis)
@@ -96,17 +95,16 @@ fun ItemRow(item: Item) {
 fun MPreview() {
     FetchTestTheme {
         DisplayItems(
-            paddingValue = PaddingValues(all = 10.dp),
             itemList = mapOf(
                 1 to listOf(
-                    Item(listId = 1, name = "sample 0", id = 1),
-                    Item(listId = 1, name = "sample 1", id = 2),
-                    Item(listId = 1, name = "sample 2", id = 0)
+                    FetchItem(listId = 1, name = "sample 0", id = 1),
+                    FetchItem(listId = 1, name = "sample 1", id = 2),
+                    FetchItem(listId = 1, name = "sample 2", id = 0)
                 ),
                 2 to listOf(
-                    Item(listId = 2, name = "sample 0", id = 2),
-                    Item(listId = 2, name = "sample 1", id = 2),
-                    Item(listId = 2, name = "sample 2", id = 2)
+                    FetchItem(listId = 2, name = "sample 0", id = 2),
+                    FetchItem(listId = 2, name = "sample 1", id = 2),
+                    FetchItem(listId = 2, name = "sample 2", id = 2)
                 )
             )
         )

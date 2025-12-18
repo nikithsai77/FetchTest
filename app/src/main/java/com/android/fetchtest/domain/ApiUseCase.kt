@@ -1,6 +1,5 @@
 package com.android.fetchtest.domain
 
-import com.android.fetchtest.data.Item
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
@@ -9,14 +8,14 @@ import kotlinx.coroutines.withContext
 
 class ApiUseCase(private val repository: Repository) {
 
-    operator fun invoke() : Flow<Result<Map<Int, List<Item>>, DataError>> = flow {
+    operator fun invoke() : Flow<Result<Map<Int, List<FetchItem>>, DataError>> = flow {
         val res = repository.getItems()
         res.collect { result ->
             when(result) {
-                is Result.Loading -> emit(result)
-                is Result.Error -> emit(result)
+                is Result.Loading -> emit(value = result)
+                is Result.Error -> emit(value = result)
                 is Result.Success -> {
-                    val finalItemsList = withContext(Dispatchers.Default) {
+                    val finalItemsList = withContext(context = Dispatchers.Default) {
                         val map = result.data.filter {
                             ensureActive()
                             !it.name.isNullOrBlank()
@@ -36,7 +35,7 @@ class ApiUseCase(private val repository: Repository) {
                         }
                         map
                     }
-                    emit(Result.Success(data = finalItemsList))
+                    emit(value = Result.Success(data = finalItemsList))
                 }
             }
         }

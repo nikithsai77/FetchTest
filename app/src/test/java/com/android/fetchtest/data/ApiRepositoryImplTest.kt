@@ -2,7 +2,7 @@ package com.android.fetchtest.data
 
 import com.android.fetchtest.domain.DataError
 import com.android.fetchtest.domain.Result
-import junit.framework.TestCase.assertEquals
+import kotlin.test.assertEquals
 import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Before
@@ -29,16 +29,20 @@ class ApiRepositoryImplTest {
     @Test
     fun `test successful API call`() = runTest {
         val successfulOfItems = listOf(
-            Item(listId = 1, name = "okay 1", id = 1),
-            Item(listId = 2, name = "okay 2", id = 2),
-            Item(listId = 3, name = "okay 3", id = 3)
+            ItemDTO(listId = 1, name = "okay 1", id = 1),
+            ItemDTO(listId = 3, name = "okay 3", id = 3),
+            ItemDTO(listId = 2, name = "okay 2", id = 2)
         )
         Mockito.`when`(apiService.getItems()).thenReturn(successfulOfItems)
         apiRepositoryImpl.getItems().collect {
             when(it) {
-                is Result.Loading -> assertEquals(Result.Loading, it)
-                is Result.Success -> assertEquals(successfulOfItems, it.data)
-                is Result.Error -> fail("Unexpected result type $it")
+                is Result.Loading -> assertEquals(expected = Result.Loading, actual = it)
+                is Result.Success -> assertEquals(
+                    expected = successfulOfItems, actual = it.data.map { item ->
+                        item.toItemDTO()
+                    }
+                )
+                is Result.Error -> fail(message = "Unexpected result type $it")
             }
         }
     }

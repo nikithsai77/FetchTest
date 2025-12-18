@@ -119,7 +119,7 @@ dependencies {
 
     // Local unit tests
     testImplementation("androidx.test:core:1.6.1")
-    testImplementation("androidx.arch.core:core-testing:2.2.0")
+    testImplementation("androidx.arch.core:core-testing:2.1.0")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
     testImplementation("com.google.truth:truth:1.1.3")
     testImplementation("com.squareup.okhttp3:mockwebserver:4.9.1")
@@ -131,7 +131,7 @@ dependencies {
     kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.52")
     androidTestImplementation("junit:junit:4.13.2")
     androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
-    androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
+    androidTestImplementation("androidx.arch.core:core-testing:2.1.0")
     androidTestImplementation("com.google.truth:truth:1.1.3")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test:core-ktx:1.6.1")

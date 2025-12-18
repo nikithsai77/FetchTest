@@ -2,6 +2,7 @@ package com.android.fetchtest.presentation
 
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -17,7 +18,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.fetchtest.di.Module
 import com.android.fetchtest.presentation.composable.TopAppBar
 import com.android.fetchtest.presentation.mainActivity.ItemScreen
-import com.android.fetchtest.presentation.mainActivity.ItemViewModel
+import com.android.fetchtest.presentation.mainActivity.MainViewModel
 import com.android.fetchtest.presentation.mainActivity.MainActivity
 import com.android.fetchtest.presentation.tag.TestTags
 import com.android.fetchtest.ui.theme.FetchTestTheme
@@ -47,9 +48,9 @@ class MainActivityTest {
                         color = MaterialTheme.colorScheme.background
                     ) {
                         Scaffold(topBar = { TopAppBar(title = "Testing Fetch") }) {
-                            val itemViewModel: ItemViewModel = hiltViewModel()
-                            val state by itemViewModel.resource.collectAsStateWithLifecycle()
-                            ItemScreen(paddingValue = it, resource = state) { itemViewModel.onEvent(ClickEvent.Retry) }
+                            val mainViewModel: MainViewModel = hiltViewModel()
+                            val state by mainViewModel.resource.collectAsStateWithLifecycle()
+                            ItemScreen(modifier = Modifier.padding(paddingValues = it), resource = state) { mainViewModel.onEvent(ClickEvent.Retry) }
                         }
                     }
                 }
