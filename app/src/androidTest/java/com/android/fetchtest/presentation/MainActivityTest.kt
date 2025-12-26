@@ -50,7 +50,7 @@ class MainActivityTest {
                         Scaffold(topBar = { TopAppBar(title = "Testing Fetch") }) {
                             val mainViewModel: MainViewModel = hiltViewModel()
                             val state by mainViewModel.resource.collectAsStateWithLifecycle()
-                            ItemScreen(modifier = Modifier.padding(paddingValues = it), resource = state) { mainViewModel.onEvent(ClickEvent.Retry) }
+                            ItemScreen(modifier = Modifier.padding(paddingValues = it), resource = state) { mainViewModel.onEvent(OnEvent.Retry) }
                         }
                     }
                 }

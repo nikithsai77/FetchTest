@@ -32,12 +32,12 @@ import com.android.fetchtest.ui.theme.FetchTestTheme
 fun ItemScreen(
     modifier: Modifier = Modifier,
     resource: Result<Map<Int, List<FetchItem>>, DataError>,
-    clickEvent: () -> Unit
+    onRetry: () -> Unit
 ) {
     when(resource) {
         is Result.Loading -> LoadingSymbol(modifier)
         is Result.Success -> DisplayItems(modifier, itemList = resource.data)
-        is Result.Error -> Retry(modifier, errorMsg = resource.error.getErrorDescription(), retry = clickEvent)
+        is Result.Error -> Retry(modifier, errorMsg = resource.error.getErrorDescription(), onRetry = onRetry)
     }
 }
 
@@ -51,10 +51,10 @@ fun LoadingSymbol(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun Retry(modifier: Modifier = Modifier, errorMsg: String, retry: () -> Unit) {
+fun Retry(modifier: Modifier = Modifier, errorMsg: String, onRetry: () -> Unit) {
     Column(modifier = modifier.fillMaxSize().testTag(tag = TestTags.RETRY), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
         Text(text = errorMsg , textAlign = TextAlign.Center, style = MaterialTheme.typography.bodyLarge)
-        Button(onClick = { retry.invoke() }) {
+        Button(onClick = { onRetry.invoke() }) {
             Text(text = stringResource(id = R.string.retry))
         }
     }

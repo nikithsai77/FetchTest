@@ -6,7 +6,7 @@ import com.android.fetchtest.domain.ApiUseCase
 import com.android.fetchtest.domain.DataError
 import com.android.fetchtest.domain.FetchItem
 import com.android.fetchtest.domain.Result
-import com.android.fetchtest.presentation.ClickEvent
+import com.android.fetchtest.presentation.OnEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,9 +35,9 @@ class MainViewModel @Inject constructor(private val apiUseCase: ApiUseCase) : Vi
         }
     }
 
-    fun onEvent(clickEvent: ClickEvent) {
-        when(clickEvent) {
-            ClickEvent.Retry -> {
+    fun onEvent(onEvent: OnEvent) {
+        when(onEvent) {
+            OnEvent.Retry -> {
                 job = null
                 fetchItems()
             }

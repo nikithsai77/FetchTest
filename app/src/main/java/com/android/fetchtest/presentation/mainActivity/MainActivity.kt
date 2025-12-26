@@ -10,7 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.retain.retain
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -20,7 +20,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.fetchtest.domain.DataError
 import com.android.fetchtest.domain.FetchItem
 import com.android.fetchtest.domain.Result
-import com.android.fetchtest.presentation.ClickEvent
+import com.android.fetchtest.presentation.OnEvent
 import com.android.fetchtest.presentation.composable.TopAppBar
 import com.android.fetchtest.ui.theme.FetchTestTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,11 +42,11 @@ class MainActivity : ComponentActivity() {
                     ) {
                         val mainViewModel: MainViewModel = hiltViewModel()
                         val state by mainViewModel.resource.collectAsStateWithLifecycle()
-                        val clickEvent = remember { { mainViewModel.onEvent(ClickEvent.Retry) } }
+                        val onRetry = retain { { mainViewModel.onEvent(OnEvent.Retry) } }
                         ItemScreen(
                             modifier = Modifier.padding(paddingValues = it),
                             resource = state,
-                            clickEvent = clickEvent
+                            onRetry = onRetry
                         )
                     }
                 }
