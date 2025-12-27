@@ -1,10 +1,10 @@
 package com.android.fetchtest.di
 
-import com.android.fetchtest.domain.ApiUseCase
-import com.android.fetchtest.domain.DataError
-import com.android.fetchtest.domain.FetchItem
+import com.android.fetchtest.domain.useCase.ApiUseCase
+import com.android.fetchtest.domain.util.DataError
+import com.android.fetchtest.domain.model.FetchItem
 import com.android.fetchtest.domain.Repository
-import com.android.fetchtest.domain.Result
+import com.android.fetchtest.domain.util.Result
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

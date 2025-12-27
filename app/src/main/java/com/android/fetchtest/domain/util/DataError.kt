@@ -1,4 +1,4 @@
-package com.android.fetchtest.domain
+package com.android.fetchtest.domain.util
 
 sealed interface DataError {
     enum class NetworkError: DataError {

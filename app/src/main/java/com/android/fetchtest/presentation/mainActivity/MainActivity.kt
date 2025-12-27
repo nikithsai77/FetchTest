@@ -17,12 +17,11 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.android.fetchtest.domain.DataError
-import com.android.fetchtest.domain.FetchItem
-import com.android.fetchtest.domain.Result
-import com.android.fetchtest.presentation.OnEvent
+import com.android.fetchtest.domain.util.DataError
+import com.android.fetchtest.domain.model.FetchItem
+import com.android.fetchtest.domain.util.Result
 import com.android.fetchtest.presentation.composable.TopAppBar
-import com.android.fetchtest.ui.theme.FetchTestTheme
+import com.android.fetchtest.presentation.theme.FetchTestTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

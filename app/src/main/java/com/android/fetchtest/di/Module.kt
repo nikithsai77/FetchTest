@@ -9,6 +9,7 @@ import okhttp3.OkHttpClient
 import com.android.fetchtest.data.*
 import com.android.fetchtest.domain.*
 import com.android.fetchtest.BuildConfig
+import com.android.fetchtest.domain.useCase.ApiUseCase
 import dagger.hilt.components.SingletonComponent
 import retrofit2.converter.gson.GsonConverterFactory
 

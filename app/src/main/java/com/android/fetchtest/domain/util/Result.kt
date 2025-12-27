@@ -1,4 +1,4 @@
-package com.android.fetchtest.domain
+package com.android.fetchtest.domain.util
 
 sealed interface Result<out D, out E: DataError> {
     data object Loading: Result<Nothing, Nothing>

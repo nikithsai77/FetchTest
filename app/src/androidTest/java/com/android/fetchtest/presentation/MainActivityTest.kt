@@ -20,8 +20,9 @@ import com.android.fetchtest.presentation.composable.TopAppBar
 import com.android.fetchtest.presentation.mainActivity.ItemScreen
 import com.android.fetchtest.presentation.mainActivity.MainViewModel
 import com.android.fetchtest.presentation.mainActivity.MainActivity
-import com.android.fetchtest.presentation.tag.TestTags
-import com.android.fetchtest.ui.theme.FetchTestTheme
+import com.android.fetchtest.presentation.mainActivity.OnEvent
+import com.android.fetchtest.presentation.util.TestTags
+import com.android.fetchtest.presentation.theme.FetchTestTheme
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules

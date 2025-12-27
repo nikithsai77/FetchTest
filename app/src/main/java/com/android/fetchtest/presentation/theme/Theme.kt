@@ -1,4 +1,4 @@
-package com.android.fetchtest.ui.theme
+package com.android.fetchtest.presentation.theme
 
 import android.app.Activity
 import android.os.Build

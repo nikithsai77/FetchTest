@@ -1,9 +1,10 @@
 package com.android.fetchtest.data
 
-import com.android.fetchtest.domain.DataError
-import com.android.fetchtest.domain.FetchItem
+import com.android.fetchtest.data.util.toFetchItem
+import com.android.fetchtest.domain.util.DataError
+import com.android.fetchtest.domain.model.FetchItem
 import com.android.fetchtest.domain.Repository
-import com.android.fetchtest.domain.Result
+import com.android.fetchtest.domain.util.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow

@@ -1,7 +1,9 @@
 package com.android.fetchtest.data
 
-import com.android.fetchtest.domain.DataError
-import com.android.fetchtest.domain.Result
+import com.android.fetchtest.data.model.ItemDTO
+import com.android.fetchtest.data.util.toItemDTO
+import com.android.fetchtest.domain.util.DataError
+import com.android.fetchtest.domain.util.Result
 import kotlin.test.assertEquals
 import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody.Companion.toResponseBody

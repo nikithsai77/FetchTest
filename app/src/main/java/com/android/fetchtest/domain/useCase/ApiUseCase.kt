@@ -1,5 +1,9 @@
-package com.android.fetchtest.domain
+package com.android.fetchtest.domain.useCase
 
+import com.android.fetchtest.domain.util.DataError
+import com.android.fetchtest.domain.model.FetchItem
+import com.android.fetchtest.domain.Repository
+import com.android.fetchtest.domain.util.Result
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
@@ -11,7 +15,7 @@ class ApiUseCase(private val repository: Repository) {
     operator fun invoke() : Flow<Result<Map<Int, List<FetchItem>>, DataError>> = flow {
         val res = repository.getItems()
         res.collect { result ->
-            when(result) {
+            when (result) {
                 is Result.Loading -> emit(value = result)
                 is Result.Error -> emit(value = result)
                 is Result.Success -> {

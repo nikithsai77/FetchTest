@@ -21,12 +21,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.android.fetchtest.R
-import com.android.fetchtest.domain.DataError
-import com.android.fetchtest.domain.FetchItem
-import com.android.fetchtest.domain.Result
-import com.android.fetchtest.presentation.getErrorDescription
-import com.android.fetchtest.presentation.tag.TestTags
-import com.android.fetchtest.ui.theme.FetchTestTheme
+import com.android.fetchtest.domain.util.DataError
+import com.android.fetchtest.domain.model.FetchItem
+import com.android.fetchtest.domain.util.Result
+import com.android.fetchtest.presentation.util.getErrorDescription
+import com.android.fetchtest.presentation.util.TestTags
+import com.android.fetchtest.presentation.theme.FetchTestTheme
 
 @Composable
 fun ItemScreen(

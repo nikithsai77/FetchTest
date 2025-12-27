@@ -2,11 +2,10 @@ package com.android.fetchtest.presentation.mainActivity
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.fetchtest.domain.ApiUseCase
-import com.android.fetchtest.domain.DataError
-import com.android.fetchtest.domain.FetchItem
-import com.android.fetchtest.domain.Result
-import com.android.fetchtest.presentation.OnEvent
+import com.android.fetchtest.domain.useCase.ApiUseCase
+import com.android.fetchtest.domain.util.DataError
+import com.android.fetchtest.domain.model.FetchItem
+import com.android.fetchtest.domain.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
