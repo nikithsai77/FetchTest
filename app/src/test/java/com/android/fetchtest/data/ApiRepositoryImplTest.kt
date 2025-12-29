@@ -1,31 +1,31 @@
 package com.android.fetchtest.data
 
 import com.android.fetchtest.data.model.ItemDTO
-import com.android.fetchtest.data.util.toItemDTO
+import com.android.fetchtest.data.util.toFetchItem
 import com.android.fetchtest.domain.util.DataError
 import com.android.fetchtest.domain.util.Result
-import kotlin.test.assertEquals
+import io.mockk.MockKAnnotations
+import io.mockk.coEvery
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Before
 import org.junit.Test
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
 import retrofit2.HttpException
 import retrofit2.Response
+import kotlin.test.assertEquals
 import kotlin.test.fail
 
 class ApiRepositoryImplTest {
-    @Mock
+    @MockK
     private lateinit var apiService: ApiService
-    @InjectMocks
+    @InjectMockKs
     private lateinit var apiRepositoryImpl: ApiRepositoryImpl
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
+        MockKAnnotations.init(this)
     }
 
     @Test
@@ -35,14 +35,14 @@ class ApiRepositoryImplTest {
             ItemDTO(listId = 3, name = "okay 3", id = 3),
             ItemDTO(listId = 2, name = "okay 2", id = 2)
         )
-        Mockito.`when`(apiService.getItems()).thenReturn(successfulOfItems)
+        coEvery { apiService.getItems() } returns successfulOfItems
         apiRepositoryImpl.getItems().collect {
             when(it) {
                 is Result.Loading -> assertEquals(expected = Result.Loading, actual = it)
                 is Result.Success -> assertEquals(
-                    expected = successfulOfItems, actual = it.data.map { item ->
-                        item.toItemDTO()
-                    }
+                    expected = successfulOfItems.map { itemDTO ->
+                        itemDTO.toFetchItem()
+                    }, actual = it.data
                 )
                 is Result.Error -> fail(message = "Unexpected result type $it")
             }
@@ -51,9 +51,7 @@ class ApiRepositoryImplTest {
 
     @Test
     fun `test fails API call`() = runTest {
-        Mockito.`when`(apiService.getItems()).thenThrow(
-            HttpException(Response.error<HttpException>(404, "".toResponseBody(contentType = null)))
-        )
+        coEvery { apiService.getItems() } throws HttpException(Response.error<HttpException>(404, "".toResponseBody(contentType = null)))
         apiRepositoryImpl.getItems().collect {
             when(it) {
                 is Result.Loading -> assertEquals(Result.Loading, it)
@@ -65,12 +63,15 @@ class ApiRepositoryImplTest {
 
     @Test
     fun `test fails API call when other exception raise`() = runTest {
-        Mockito.`when`(apiService.getItems()).thenThrow(RuntimeException())
+        coEvery { apiService.getItems() } throws RuntimeException()
         apiRepositoryImpl.getItems().collect {
             when(it) {
                 is Result.Loading -> assertEquals(Result.Loading, it)
                 is Result.Success -> fail("Unexpected result type $it")
-                is Result.Error -> assertEquals(DataError.NetworkError.SOMETHING_WENT_WRONG_TRY_AGAIN_LATER, it.error)
+                is Result.Error -> assertEquals(
+                    DataError.NetworkError.SOMETHING_WENT_WRONG_TRY_AGAIN_LATER,
+                    it.error
+                )
             }
         }
     }

@@ -1,58 +1,55 @@
 package com.android.fetchtest.data
 
+import com.android.fetchtest.MainDispatcherRule
+import com.android.fetchtest.domain.Repository
+import com.android.fetchtest.domain.model.FetchItem
 import com.android.fetchtest.domain.useCase.ApiUseCase
 import com.android.fetchtest.domain.util.DataError
-import com.android.fetchtest.domain.model.FetchItem
-import com.android.fetchtest.domain.Repository
 import com.android.fetchtest.domain.util.Result
 import com.android.fetchtest.presentation.mainActivity.MainViewModel
+import io.mockk.MockKAnnotations
+import io.mockk.coEvery
+import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
 
 @ExperimentalCoroutinesApi
 class ItemViewModelTest {
-     @Mock
-     private lateinit var repository: Repository
+    @get:Rule
+    private val mainDispatcherRule = MainDispatcherRule()
+    @MockK
+    private lateinit var repository: Repository
+    private lateinit var mainViewModel: MainViewModel
 
-     @Before
-     fun setUp() {
-         MockitoAnnotations.initMocks(this)
-     }
+    @Before
+    fun setUp() {
+        MockKAnnotations.init(this)
+        mainViewModel = MainViewModel(ApiUseCase(repository))
+    }
 
-     @Test
-     fun testSuccessCase() = runTest {
-         Dispatchers.setMain(UnconfinedTestDispatcher())
-         Mockito.`when`(repository.getItems()).thenReturn(flowOf(Result.Loading, Result.Success(data = getItems())))
-         val viewModel = MainViewModel(ApiUseCase(repository))
-         val results = viewModel.resource.take(count = 2).toList()
+    @Test
+    fun testSuccessCase() = runTest {
+         coEvery { repository.getItems() } returns flowOf(Result.Loading, Result.Success(data = getItems()))
+         val results = mainViewModel.resource.take(count = 2).toList()
          assertEquals(2, results.size)
          assertEquals(Result.Loading, results[0])
          assertEquals(Result.Success(data = getSuccessMap()), results[1])
-         Dispatchers.resetMain()
-     }
+    }
 
     @Test
     fun testFailureCase() = runTest {
-        Dispatchers.setMain(UnconfinedTestDispatcher())
-        Mockito.`when`(repository.getItems()).thenReturn(flowOf(Result.Error(error = DataError.NetworkError.SERVER_ERROR)))
-        val viewModel = MainViewModel(ApiUseCase(repository))
-        val result = viewModel.resource.take(count = 1).toList()
-        assertEquals(1, result.size)
-        assertEquals(Result.Error(error = DataError.NetworkError.SERVER_ERROR), result[0])
-        Dispatchers.resetMain()
+        coEvery { repository.getItems() } returns flowOf(Result.Loading, Result.Error(error = DataError.NetworkError.SERVER_ERROR))
+        val result = mainViewModel.resource.take(count = 2).toList()
+        assertEquals(2, result.size)
+        assertEquals(Result.Loading, result[0])
+        assertEquals(Result.Error(error = DataError.NetworkError.SERVER_ERROR), result[1])
     }
 
 }

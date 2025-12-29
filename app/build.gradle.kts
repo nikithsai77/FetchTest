@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId = "com.android.fetchtest"
-        minSdk = 23
+        minSdk = 26
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -123,7 +123,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
     testImplementation("com.google.truth:truth:1.1.3")
     testImplementation("com.squareup.okhttp3:mockwebserver:4.9.1")
-    testImplementation("io.mockk:mockk:1.10.5")
+    testImplementation("io.mockk:mockk:1.14.7")
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.8.2")
 
     // Instrumentation tests
@@ -136,7 +136,7 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test:core-ktx:1.6.1")
     androidTestImplementation("com.squareup.okhttp3:mockwebserver:4.9.1")
-    androidTestImplementation("io.mockk:mockk-android:1.10.5")
+    androidTestImplementation("io.mockk:mockk-android:1.14.7")
     androidTestImplementation("androidx.test:runner:1.6.2")
     testImplementation(kotlin("test"))
 }
