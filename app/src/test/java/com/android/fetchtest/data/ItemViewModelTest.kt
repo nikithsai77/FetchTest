@@ -10,7 +10,6 @@ import com.android.fetchtest.presentation.mainActivity.MainViewModel
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
-import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.take
@@ -19,6 +18,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import kotlin.test.assertEquals
 
 @ExperimentalCoroutinesApi
 class ItemViewModelTest {
@@ -36,28 +36,53 @@ class ItemViewModelTest {
 
     @Test
     fun testSuccessCase() = runTest {
-         coEvery { repository.getItems() } returns flowOf(Result.Loading, Result.Success(data = getItems()))
-         val results = mainViewModel.resource.take(count = 2).toList()
-         assertEquals(2, results.size)
-         assertEquals(Result.Loading, results[0])
-         assertEquals(Result.Success(data = getSuccessMap()), results[1])
+        coEvery { repository.getItems() } returns flowOf(
+            Result.Loading,
+            Result.Success(data = getItems())
+        )
+        val results = mainViewModel.resource.take(count = 2).toList()
+        assertEquals(expected = 2, actual = results.size)
+        assertEquals(expected = Result.Loading, actual = results[0])
+        assertEquals(expected = Result.Success(data = getSuccessMap()), actual = results[1])
     }
 
     @Test
     fun testFailureCase() = runTest {
-        coEvery { repository.getItems() } returns flowOf(Result.Loading, Result.Error(error = DataError.NetworkError.SERVER_ERROR))
+        coEvery { repository.getItems() } returns flowOf(
+            Result.Loading,
+            Result.Error(error = DataError.NetworkError.SERVER_ERROR)
+        )
         val result = mainViewModel.resource.take(count = 2).toList()
-        assertEquals(2, result.size)
-        assertEquals(Result.Loading, result[0])
-        assertEquals(Result.Error(error = DataError.NetworkError.SERVER_ERROR), result[1])
+        assertEquals(expected = 2, actual = result.size)
+        assertEquals(expected = Result.Loading, actual = result[0])
+        assertEquals(
+            expected = Result.Error(error = DataError.NetworkError.SERVER_ERROR),
+            actual = result[1]
+        )
     }
 
 }
 
 private fun getSuccessMap(): Map<Int, List<FetchItem>> {
-    return mapOf(1 to listOf(FetchItem(listId = 1, name = "okay 1", id = 1), FetchItem(listId = 1, name = "okay 1", id = 2), FetchItem(listId = 1, name = "okay 1", id = 3)), 2 to listOf(FetchItem(listId = 2, name = "okay 1", id = 1), FetchItem(listId = 2, name = "okay 2", id = 2)))
+    return mapOf(
+        1 to listOf(
+            FetchItem(listId = 1, name = "okay 1", id = 1),
+            FetchItem(listId = 1, name = "okay 1", id = 2),
+            FetchItem(listId = 1, name = "okay 1", id = 3)
+        ),
+        2 to listOf(
+            FetchItem(listId = 2, name = "okay 1", id = 1),
+            FetchItem(listId = 2, name = "okay 2", id = 2)
+        )
+    )
 }
 
-private fun getItems() : List<FetchItem> {
-    return listOf(FetchItem(listId = 1, name = "okay 1", id = 1), FetchItem(listId = 2, name = "okay 1", id = 1), FetchItem(listId = 1, name = "okay 1", id = 2), FetchItem(listId = 1, name = "okay 1", id = 3), FetchItem(listId = 2, name = "okay 2", id = 2))
+private fun getItems(): List<FetchItem> {
+    return listOf(
+        FetchItem(listId = 1, name = "okay 1", id = 1),
+        FetchItem(listId = 2, name = "okay 1", id = 1),
+        FetchItem(listId = 1, name = "okay 1", id = 2),
+        FetchItem(listId = 1, name = "okay 1", id = 3),
+        FetchItem(listId = 2, name = "okay 2", id = 2)
+    )
 }

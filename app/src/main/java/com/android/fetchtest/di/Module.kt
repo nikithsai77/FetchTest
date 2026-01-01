@@ -22,7 +22,15 @@ object Module {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(OkHttpClient.Builder().build())
+            .client(
+                OkHttpClient.Builder()
+                .addInterceptor { chain ->
+                    println("kk request : ${chain.request()}")
+                    val response = chain.proceed(chain.request())
+                    println("kk response : $response")
+                    response
+                }
+                .build())
             .build()
             .create(ApiService::class.java)
     }

@@ -54,9 +54,9 @@ class ApiRepositoryImplTest {
         coEvery { apiService.getItems() } throws HttpException(Response.error<HttpException>(404, "".toResponseBody(contentType = null)))
         apiRepositoryImpl.getItems().collect {
             when(it) {
-                is Result.Loading -> assertEquals(Result.Loading, it)
-                is Result.Success -> fail("Unexpected result type $it")
-                is Result.Error -> assertEquals(DataError.NetworkError.NOT_FOUND, it.error)
+                is Result.Loading -> assertEquals(expected = Result.Loading, actual = it)
+                is Result.Success -> fail(message = "Unexpected result type $it")
+                is Result.Error -> assertEquals(expected = DataError.NetworkError.NOT_FOUND, actual = it.error)
             }
         }
     }
@@ -66,11 +66,11 @@ class ApiRepositoryImplTest {
         coEvery { apiService.getItems() } throws RuntimeException()
         apiRepositoryImpl.getItems().collect {
             when(it) {
-                is Result.Loading -> assertEquals(Result.Loading, it)
-                is Result.Success -> fail("Unexpected result type $it")
+                is Result.Loading -> assertEquals(expected =  Result.Loading, actual = it)
+                is Result.Success -> fail(message = "Unexpected result type $it")
                 is Result.Error -> assertEquals(
-                    DataError.NetworkError.SOMETHING_WENT_WRONG_TRY_AGAIN_LATER,
-                    it.error
+                    expected = DataError.NetworkError.SOMETHING_WENT_WRONG_TRY_AGAIN_LATER,
+                    actual = it.error
                 )
             }
         }

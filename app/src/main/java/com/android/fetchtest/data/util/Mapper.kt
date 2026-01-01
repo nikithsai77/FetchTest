@@ -10,11 +10,3 @@ fun ItemDTO.toFetchItem(): FetchItem {
         id = id
     )
 }
-
-fun FetchItem.toItemDTO(): ItemDTO {
-    return ItemDTO(
-        listId = listId,
-        name = name,
-        id = id
-    )
-}

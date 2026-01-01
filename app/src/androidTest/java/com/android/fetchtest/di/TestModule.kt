@@ -39,21 +39,26 @@ object TestAppModule {
     }
 }
 
-private class Success: Repository {
+private class Success : Repository {
     override suspend fun getItems(): Flow<Result<Collection<FetchItem>, DataError>> {
-        return flowOf(Result.Loading,  Result.Success(data = listOf(FetchItem(listId = 1, name = "okay 1", id = 1),
-            FetchItem(listId = 1, name = "okay 1", id = 1),
-            FetchItem(listId = 2, name = "okay 2", id = 2),
-            FetchItem(listId = 1, name = "okay 1", id = 1),
-            FetchItem(listId = 2, name = "okay 2", id = 2),
-            FetchItem(listId = 1, name = "okay 1", id = 1),
-            FetchItem(listId = 3, name = "okay 3", id = 3),
-            FetchItem(listId = 3, name = "okay 3", id = 3)
-            )))
+        return flowOf(
+            Result.Loading, Result.Success(
+                data = listOf(
+                    FetchItem(listId = 1, name = "okay 1", id = 1),
+                    FetchItem(listId = 1, name = "okay 1", id = 1),
+                    FetchItem(listId = 2, name = "okay 2", id = 2),
+                    FetchItem(listId = 1, name = "okay 1", id = 1),
+                    FetchItem(listId = 2, name = "okay 2", id = 2),
+                    FetchItem(listId = 1, name = "okay 1", id = 1),
+                    FetchItem(listId = 3, name = "okay 3", id = 3),
+                    FetchItem(listId = 3, name = "okay 3", id = 3)
+                )
+            )
+        )
     }
 }
 
-private class Failed: Repository {
+private class Failed : Repository {
     override suspend fun getItems(): Flow<Result<Collection<FetchItem>, DataError>> {
         return flowOf(Result.Loading, Result.Error(error = DataError.NetworkError.NOT_FOUND))
     }
