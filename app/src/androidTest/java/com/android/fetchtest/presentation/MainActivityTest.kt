@@ -16,12 +16,12 @@ import androidx.compose.ui.test.performClick
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.fetchtest.di.Module
-import com.android.fetchtest.presentation.composable.TopAppBar
-import com.android.fetchtest.presentation.mainActivity.ItemScreen
+import com.android.fetchtest.presentation.components.TopAppBar
+import com.android.fetchtest.presentation.components.ItemScreen
 import com.android.fetchtest.presentation.mainActivity.MainViewModel
 import com.android.fetchtest.presentation.mainActivity.MainActivity
 import com.android.fetchtest.presentation.mainActivity.OnEvent
-import com.android.fetchtest.presentation.util.TestTags
+import com.android.fetchtest.presentation.components.TestTags
 import com.android.fetchtest.presentation.theme.FetchTestTheme
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

@@ -20,7 +20,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.fetchtest.domain.util.DataError
 import com.android.fetchtest.domain.model.FetchItem
 import com.android.fetchtest.domain.util.Result
-import com.android.fetchtest.presentation.composable.TopAppBar
+import com.android.fetchtest.presentation.components.ItemScreen
+import com.android.fetchtest.presentation.components.TopAppBar
 import com.android.fetchtest.presentation.theme.FetchTestTheme
 import dagger.hilt.android.AndroidEntryPoint
 

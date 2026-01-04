@@ -1,4 +1,4 @@
-package com.android.fetchtest.presentation.mainActivity
+package com.android.fetchtest.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -24,8 +24,6 @@ import com.android.fetchtest.R
 import com.android.fetchtest.domain.util.DataError
 import com.android.fetchtest.domain.model.FetchItem
 import com.android.fetchtest.domain.util.Result
-import com.android.fetchtest.presentation.util.getErrorDescription
-import com.android.fetchtest.presentation.util.TestTags
 import com.android.fetchtest.presentation.theme.FetchTestTheme
 
 @Composable

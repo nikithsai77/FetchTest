@@ -1,4 +1,4 @@
-package com.android.fetchtest.presentation.util
+package com.android.fetchtest.presentation.components
 
 import com.android.fetchtest.R
 import androidx.compose.runtime.Composable
