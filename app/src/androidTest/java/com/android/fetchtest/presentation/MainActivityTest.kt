@@ -20,8 +20,8 @@ import com.android.fetchtest.presentation.components.TopAppBar
 import com.android.fetchtest.presentation.components.ItemScreen
 import com.android.fetchtest.presentation.mainActivity.MainViewModel
 import com.android.fetchtest.presentation.mainActivity.MainActivity
-import com.android.fetchtest.presentation.mainActivity.OnEvent
-import com.android.fetchtest.presentation.components.TestTags
+import com.android.fetchtest.presentation.mainActivity.OnAction
+import com.android.fetchtest.presentation.util.TestTags
 import com.android.fetchtest.presentation.theme.FetchTestTheme
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -50,8 +50,8 @@ class MainActivityTest {
                     ) {
                         Scaffold(topBar = { TopAppBar(title = "Testing Fetch") }) {
                             val mainViewModel: MainViewModel = hiltViewModel()
-                            val state by mainViewModel.resource.collectAsStateWithLifecycle()
-                            ItemScreen(modifier = Modifier.padding(paddingValues = it), resource = state) { mainViewModel.onEvent(OnEvent.Retry) }
+                            val state by mainViewModel.state.collectAsStateWithLifecycle()
+                            ItemScreen(modifier = Modifier.padding(paddingValues = it), state = state) { mainViewModel.onAction(OnAction.Retry) }
                         }
                     }
                 }

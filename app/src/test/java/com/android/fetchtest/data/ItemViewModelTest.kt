@@ -40,7 +40,7 @@ class ItemViewModelTest {
             Result.Loading,
             Result.Success(data = getItems())
         )
-        val results = mainViewModel.resource.take(count = 2).toList()
+        val results = mainViewModel.state.take(count = 2).toList()
         assertEquals(expected = 2, actual = results.size)
         assertEquals(expected = Result.Loading, actual = results[0])
         assertEquals(expected = Result.Success(data = getSuccessMap()), actual = results[1])
@@ -52,7 +52,7 @@ class ItemViewModelTest {
             Result.Loading,
             Result.Error(error = DataError.NetworkError.SERVER_ERROR)
         )
-        val result = mainViewModel.resource.take(count = 2).toList()
+        val result = mainViewModel.state.take(count = 2).toList()
         assertEquals(expected = 2, actual = result.size)
         assertEquals(expected = Result.Loading, actual = result[0])
         assertEquals(

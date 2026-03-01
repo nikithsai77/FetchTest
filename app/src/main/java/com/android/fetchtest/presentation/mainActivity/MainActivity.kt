@@ -41,11 +41,11 @@ class MainActivity : ComponentActivity() {
                         }
                     ) {
                         val mainViewModel: MainViewModel = hiltViewModel()
-                        val state by mainViewModel.resource.collectAsStateWithLifecycle()
-                        val onRetry = retain { { mainViewModel.onEvent(OnEvent.Retry) } }
+                        val state by mainViewModel.state.collectAsStateWithLifecycle()
+                        val onRetry = retain { { mainViewModel.onAction(OnAction.Retry) } }
                         ItemScreen(
                             modifier = Modifier.padding(paddingValues = it),
-                            resource = state,
+                            state = state,
                             onRetry = onRetry
                         )
                     }
@@ -58,10 +58,10 @@ class MainActivity : ComponentActivity() {
 @PreviewLightDark
 @Composable
 fun GreetingPreview(
-    @PreviewParameter(provider = ResourceProvider::class) resource: Result<Map<Int, List<FetchItem>>, DataError>
+    @PreviewParameter(provider = ResourceProvider::class) state: Result<Map<Int, List<FetchItem>>, DataError>
 ) {
     FetchTestTheme {
-        ItemScreen(resource = resource) {}
+        ItemScreen(state = state) {}
     }
 }
 

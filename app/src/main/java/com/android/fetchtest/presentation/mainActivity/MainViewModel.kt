@@ -21,22 +21,22 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(private val apiUseCase: ApiUseCase) : ViewModel() {
     private var job: Job? = null
-    private val _resource = MutableStateFlow<Result<Map<Int, List<FetchItem>>, DataError>>(value = Result.Loading)
-    val resource: StateFlow<Result<Map<Int, List<FetchItem>>, DataError>> = _resource.onStart { fetchItems() }.stateIn(scope = viewModelScope, started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L), initialValue = Result.Loading)
+    private val _state = MutableStateFlow<Result<Map<Int, List<FetchItem>>, DataError>>(value = Result.Loading)
+    val state: StateFlow<Result<Map<Int, List<FetchItem>>, DataError>> = _state.onStart { fetchItems() }.stateIn(scope = viewModelScope, started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L), initialValue = Result.Loading)
 
     private fun fetchItems() {
         if (job == null) {
             job = apiUseCase().onEach { newState ->
-                _resource.update {
+                _state.update {
                     newState
                 }
             }.launchIn(viewModelScope)
         }
     }
 
-    fun onEvent(onEvent: OnEvent) {
-        when(onEvent) {
-            OnEvent.Retry -> {
+    fun onAction(onAction: OnAction) {
+        when(onAction) {
+            OnAction.Retry -> {
                 job = null
                 fetchItems()
             }

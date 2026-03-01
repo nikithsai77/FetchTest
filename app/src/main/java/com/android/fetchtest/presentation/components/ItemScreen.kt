@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -25,17 +26,18 @@ import com.android.fetchtest.domain.util.DataError
 import com.android.fetchtest.domain.model.FetchItem
 import com.android.fetchtest.domain.util.Result
 import com.android.fetchtest.presentation.theme.FetchTestTheme
+import com.android.fetchtest.presentation.util.TestTags
 
 @Composable
 fun ItemScreen(
     modifier: Modifier = Modifier,
-    resource: Result<Map<Int, List<FetchItem>>, DataError>,
+    state: Result<Map<Int, List<FetchItem>>, DataError>,
     onRetry: () -> Unit
 ) {
-    when(resource) {
+    when(state) {
         is Result.Loading -> LoadingSymbol(modifier)
-        is Result.Success -> DisplayItems(modifier, itemList = resource.data)
-        is Result.Error -> Retry(modifier, errorMsg = resource.error.getErrorDescription(), onRetry = onRetry)
+        is Result.Success -> DisplayItems(modifier, itemList = state.data)
+        is Result.Error -> Retry(modifier, errorMsg = state.error.getErrorDescription(), onRetry = onRetry)
     }
 }
 
@@ -43,7 +45,7 @@ fun ItemScreen(
 fun LoadingSymbol(modifier: Modifier = Modifier) {
     Column(modifier = modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
         CircularProgressIndicator()
-        Spacer(modifier = Modifier.padding(all = 4.dp))
+        Spacer(modifier = Modifier.height(height = 5.dp))
         Text(text = stringResource(id = R.string.please_wait_loading), modifier = Modifier.testTag(tag = TestTags.LOADING))
     }
 }
@@ -52,6 +54,7 @@ fun LoadingSymbol(modifier: Modifier = Modifier) {
 fun Retry(modifier: Modifier = Modifier, errorMsg: String, onRetry: () -> Unit) {
     Column(modifier = modifier.fillMaxSize().testTag(tag = TestTags.RETRY), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
         Text(text = errorMsg , textAlign = TextAlign.Center, style = MaterialTheme.typography.bodyLarge)
+        Spacer(modifier = Modifier.height(height = 5.dp))
         Button(onClick = { onRetry.invoke() }) {
             Text(text = stringResource(id = R.string.retry))
         }
