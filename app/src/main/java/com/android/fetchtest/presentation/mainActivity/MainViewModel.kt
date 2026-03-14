@@ -6,15 +6,14 @@ import com.android.fetchtest.domain.useCase.ApiUseCase
 import com.android.fetchtest.domain.util.DataError
 import com.android.fetchtest.domain.model.FetchItem
 import com.android.fetchtest.domain.util.Result
+import com.android.fetchtest.presentation.util.stateInWhileSubScribed
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
@@ -22,7 +21,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(private val apiUseCase: ApiUseCase) : ViewModel() {
     private var job: Job? = null
     private val _state = MutableStateFlow<Result<Map<Int, List<FetchItem>>, DataError>>(value = Result.Loading)
-    val state: StateFlow<Result<Map<Int, List<FetchItem>>, DataError>> = _state.onStart { fetchItems() }.stateIn(scope = viewModelScope, started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L), initialValue = Result.Loading)
+    val state: StateFlow<Result<Map<Int, List<FetchItem>>, DataError>> = _state.onStart { fetchItems() }.stateInWhileSubScribed(initialValue = Result.Loading)
 
     private fun fetchItems() {
         if (job == null) {
