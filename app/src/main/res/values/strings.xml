@@ -12,7 +12,7 @@
     <string name="BAD_REQUEST">Bad Network Request Try Again Later!</string>
     <string name="NOT_FOUND">Not Found, Try Again Later!</string>
     <string name="server_decline">The request was valid, but the server is refusing action.</string>
-    <string name="Service_UnAvailable">The server is temporarily unable. Try Again Later!</string>
+    <string name="SERVICE_UN_AVAILABLE">The server is temporarily unable. Try Again Later!</string>
     <string name="some_thing">SomeThing Went Wrong Try Again Later!</string>
     <string name="the_request_method_is_not_supported">The request method is not supported</string>
     <string name="UNSUPPORTED_MEDIA_TYPE">The Request Entity Has a Media Type Which The Server (or) Resource Does Not Support.</string>

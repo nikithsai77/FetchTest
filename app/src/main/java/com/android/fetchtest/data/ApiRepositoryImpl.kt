@@ -35,7 +35,7 @@ class ApiRepositoryImpl(private val apiService: ApiService) : Repository {
                         415 -> emit(value = Result.Error(error = DataError.NetworkError.UNSUPPORTED_MEDIA_TYPE))
                         429 -> emit(value = Result.Error(error = DataError.NetworkError.TOO_MANY_REQUESTS))
                         500 -> emit(value = Result.Error(error = DataError.NetworkError.SERVER_ERROR))
-                        503 -> emit(value = Result.Error(error = DataError.NetworkError.SERVICEUnAvailable))
+                        503 -> emit(value = Result.Error(error = DataError.NetworkError.SERVICE_UN_AVAILABLE))
                         else -> emit(value = Result.Error(error = DataError.NetworkError.SOMETHING_WENT_WRONG_TRY_AGAIN_LATER))
                     }
                 }
